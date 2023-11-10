@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "baseUrl": ".",
+    "forceConsistentCasingInFileNames": true,
+    "module": "esnext",
+    "paths": {
+      "~/*": [ "./src/*" ],
+      "^/*": [ "./*" ],
+      // fixes getReactNativePersistence warning in firebaseConfig
+      "@firebase/auth": [ "./node_modules/@firebase/auth/dist/index.rn.d.ts" ],
+    }
+  },
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "./src/**/*.ts",
+    "./src/**/*.tsx",
+    ".expo/types/**/*.ts",
+    "expo-env.d.ts"
+  ],
+  "extends": "expo/tsconfig.base"
+}
