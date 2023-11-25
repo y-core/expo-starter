@@ -1,5 +1,5 @@
-import { ActivityIndicator, Pressable, PressableProps, TextProps, TextStyle, ViewStyle } from 'react-native';
-import { Text as NativeText } from 'react-native';
+import React from 'react';
+import { ActivityIndicator, Pressable, PressableProps, Text as NativeText, TextProps, TextStyle, ViewStyle } from 'react-native';
 
 import { useColor } from '~/color/hooks';
 import { tw } from '~/common/utils';

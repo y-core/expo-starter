@@ -1,13 +1,16 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-type StorageKey = 'theme';
+export interface IAsyncStore {
+  key: 'theme';
+  value: object | null;
+}
 
 export class AsyncStore {
-  static async set(key: StorageKey, value: object | null) {
+  static async set(key: IAsyncStore['key'], value: IAsyncStore['value']) {
     await AsyncStorage.setItem(key, JSON.stringify(value));
   }
 
-  static async get<T>(key: StorageKey): Promise<T | null> {
+  static async get<T>(key: IAsyncStore['key']): Promise<T | null> {
     const value = await AsyncStorage.getItem(key);
 
     if (value !== null) {

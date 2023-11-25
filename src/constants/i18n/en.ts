@@ -13,7 +13,7 @@ export default {
   auth: {
     // labels
     confirmLabel: <string>'Confirm Password',
-    emailLabel: <string>'Email',
+    usernameLabel: <string>'Email',
     enterEmail: <string>'Enter your email',
     enterPassword: <string>'Enter your password',
     forgotPasswordLabel: <string>'Forgot Password',

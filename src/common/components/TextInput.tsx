@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import React, { useRef } from 'react';
 import { TextInput as NativeTextInput, TextInputProps, TextStyle } from 'react-native';
 
 import { useColor } from '~/color/hooks';

@@ -1,1 +1,1 @@
-export { default as AppLogo } from '^/assets/svgs/applogo.svg';
+export { default as AppLogo } from '#/assets/svgs/applogo.svg';

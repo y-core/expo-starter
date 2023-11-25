@@ -1,4 +1,4 @@
-import { ComponentProps, forwardRef, Ref } from 'react';
+import React, { ComponentProps, forwardRef, Ref } from 'react';
 import { Pressable, TextStyle } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 

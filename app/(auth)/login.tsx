@@ -1,70 +1,16 @@
-import { useState } from 'react';
+import React from 'react';
 import { KeyboardAvoidingView, Platform } from 'react-native';
-import * as Yup from 'yup';
 
-import { AppLogo } from '^/assets/svgs';
-import { useAuth } from '~/auth/hooks';
-import { Button, Screen, Text, TextInput, ToastError, View } from '~/common/components';
-import { go, lang, tw } from '~/common/utils';
+import { AppLogo } from '#/assets/svgs';
+import { Button, Screen, Text, TextInput, View } from '~/common/components';
+import { lang, tw } from '~/common/utils';
+import { useAuth, useAuthRef } from '~/features/auth';
 
-const SIGNIN_EMPTY = {
-  username: '',
-  password: '',
-};
-
-const yieldError = (err) => {
-  let errorKey: keyof typeof lang.auth = 'default';
-  switch (true) {
-    case err instanceof Yup.ValidationError: {
-      errorKey = err.inner[0].message;
-      break;
-    }
-    case err instanceof Error: {
-      errorKey = err.code;
-      break;
-    }
-  }
-
-  return lang.auth[errorKey] || lang.auth.default;
-};
+export { ErrorBoundary } from 'expo-router';
 
 export default function Login() {
-  const { loading, resetPassword, signIn, signUp } = useAuth();
-  const [values, setValues] = useState(__DEV__ ? require('^/env').SIGNIN_DEFAULT : SIGNIN_EMPTY);
-
-  const login = async (credentials: typeof SIGNIN_EMPTY) => {
-    const [err] = await go(signIn(credentials));
-
-    if (err) {
-      ToastError(yieldError(err));
-      return { error: err };
-    }
-    setValues(SIGNIN_EMPTY);
-  };
-
-  const register = async (credentials: typeof SIGNIN_EMPTY) => {
-    const [err] = await go(signUp(credentials));
-
-    if (err) {
-      ToastError(yieldError(err));
-      return { error: err };
-    }
-  };
-
-  const reset = async (username: string) => {
-    const [err] = await go(resetPassword(username));
-
-    if (err) {
-      ToastError(yieldError(err));
-      return { error: err };
-    }
-    setValues(SIGNIN_EMPTY);
-  };
-
-  function handleChange(name: string, value: string) {
-    setValues((state) => ({ ...state, [name]: value }));
-  }
-
+  const authHandler = useAuth();
+  const signinRef = useAuthRef();
   return (
     <Screen>
       <AppLogo height={'150'} width={'150'} />
@@ -74,20 +20,23 @@ export default function Login() {
         style={tw.style('gap-y-2')}
       >
         <View style={tw.style('gap-y-3')}>
-          <Text>{lang.auth.emailLabel}</Text>
+          <Text>{lang.auth.usernameLabel}</Text>
           <TextInput
             autoCapitalize="none"
             keyboardType="email-address"
-            placeholder={lang.auth.emailLabel.toLowerCase()}
+            placeholder={lang.auth.usernameLabel.toLowerCase()}
             style={tw.style('w-60')}
-            onChangeText={(value) => handleChange('username', value)}
-            defaultValue={values.username}
+            testID={'username'}
+            defaultValue={signinRef.username.current}
+            onChangeText={(text) => {
+              signinRef.username.current = text;
+            }}
           />
         </View>
         <View style={tw.style('mb-4 gap-y-3')}>
           <View style={tw.style('flex-row items-center justify-between')}>
             <Text>{lang.auth.passwordLabel}</Text>
-            <Button asLink={true} onPress={() => reset(values.username)}>
+            <Button asLink={true} onPress={() => authHandler.resetPassword(signinRef.username.current)} testID={'resetButton'}>
               {lang.auth.forgotPasswordLabel}
             </Button>
           </View>
@@ -95,16 +44,19 @@ export default function Login() {
             placeholder={lang.auth.passwordLabel.toLowerCase()}
             secureTextEntry={true}
             style={tw.style('w-60')}
-            onChangeText={(value) => handleChange('password', value)}
-            defaultValue={values.password}
+            testID={'password'}
+            defaultValue={signinRef.password.current}
+            onChangeText={(text) => {
+              signinRef.password.current = text;
+            }}
           />
         </View>
         <View style={tw.style('items-center gap-y-2')}>
-          <Button loading={loading} onPress={() => login(values)}>
+          <Button loading={authHandler.loading} testID={'signInButton'} onPress={() => authHandler.signIn(signinRef)}>
             {lang.auth.loginLabel}
           </Button>
           <Text style={tw.style('flex items-center self-center justify-center')}> or </Text>
-          <Button asLink={true} onPress={() => register(values)}>
+          <Button asLink={true} testID={'signUpButton'} onPress={() => authHandler.signUp(signinRef)}>
             {lang.auth.registerLabel}
           </Button>
         </View>

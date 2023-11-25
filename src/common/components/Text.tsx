@@ -1,3 +1,4 @@
+import React from 'react';
 import { Text as NativeText, TextProps as NativeTextProps, TextStyle } from 'react-native';
 
 import { useColor } from '~/color/hooks';

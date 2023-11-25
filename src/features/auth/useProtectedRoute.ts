@@ -1,13 +1,11 @@
 import { useEffect } from 'react';
 import { useRouter, useSegments } from 'expo-router';
 
-import { useAuth } from '~/auth/hooks/useAuth';
+import { useAuth } from '~/features/auth/useAuth';
 
 export function useProtectedRoute() {
   const { auth } = useAuth();
-
   const segments = useSegments();
-
   const router = useRouter();
 
   useEffect(() => {
@@ -18,5 +16,5 @@ export function useProtectedRoute() {
     } else if (auth && inAuthGroup) {
       router.replace('/home');
     }
-  }, [auth, segments]);
+  }, [auth, router, segments]);
 }

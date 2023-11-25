@@ -6,11 +6,11 @@ import Toast from 'react-native-toast-message';
 import { useFonts } from 'expo-font';
 import { SplashScreen, Stack } from 'expo-router';
 
-import { useProtectedRoute, useRehydrateAuth } from '~/auth/hooks';
 import { useColor, useColorScheme, useRehydrateTheme } from '~/color/hooks';
 import { toastConfig } from '~/common/components/Toast';
 import { lang, tw } from '~/common/utils';
 import { Fonts } from '~/constants';
+import { useProtectedRoute, useRehydrateAuth } from '~/features/auth';
 
 export { ErrorBoundary } from 'expo-router';
 
@@ -25,13 +25,17 @@ export default function Init() {
   const [fontsLoaded, error] = useFonts(Fonts);
 
   useEffect(() => {
-    if (error) throw error;
+    if (error) {
+      throw error;
+    }
   }, [error]);
 
   useRehydrateTheme(systemColor);
 
   useEffect(() => {
-    if (fontsLoaded) SplashScreen.hideAsync();
+    if (fontsLoaded) {
+      SplashScreen.hideAsync();
+    }
   }, [fontsLoaded]);
 
   if (!fontsLoaded) {

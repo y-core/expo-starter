@@ -1,3 +1,4 @@
+import React from 'react';
 import { View as NativeView, ViewProps as NativeViewProps, ViewStyle } from 'react-native';
 
 import { tw } from '~/common/utils';

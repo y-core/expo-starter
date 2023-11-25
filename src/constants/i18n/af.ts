@@ -12,7 +12,7 @@ export default <LanguageKeys>{
   auth: {
     // labels
     confirmLabel: 'Bevestig Wagwoord',
-    emailLabel: 'E-posadres',
+    usernameLabel: 'E-posadres',
     enterEmail: 'Verskaf e-posadres',
     enterPassword: 'Verskaf wagwoord',
     forgotPasswordLabel: 'Wagwoord vergeet',

@@ -1,3 +1,5 @@
+import React from 'react';
+
 import View, { ViewProps } from '~/common/components/View';
 import { tw } from '~/common/utils';
 

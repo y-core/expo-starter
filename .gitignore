@@ -9,7 +9,9 @@ npm-debug.*
 *.mobileprovision
 *.orig.*
 web-build/
-
+.pnpm-store
+.wrangler
+.dev.vars
 env.ts
 
 # macOS

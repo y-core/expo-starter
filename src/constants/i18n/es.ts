@@ -12,7 +12,7 @@ export default <LanguageKeys>{
   auth: {
     // etiquetas
     confirmLabel: 'Confirmar Contraseña',
-    emailLabel: 'Correo Electrónico',
+    usernameLabel: 'Correo Electrónico',
     enterEmail: 'Ingresa tu correo electrónico',
     enterPassword: 'Ingresa tu contraseña',
     forgotPasswordLabel: 'Olvidé la Contraseña',
