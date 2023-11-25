@@ -9,7 +9,7 @@ import { IAuthState, ICredentials } from '~/features/auth/auth.d';
 import { authError, loadAuthService } from '~/features/auth/services';
 
 const SIGNIN_EMPTY: ICredentials = { username: '', password: '' };
-const SIGNIN_DEFAULT: ICredentials = __DEV__ ? SIGNIN_DEV.credentials : SIGNIN_EMPTY;
+const SIGNIN_DEFAULT: ICredentials = __DEV__ && SIGNIN_DEV ? SIGNIN_DEV.credentials : SIGNIN_EMPTY;
 
 const err = authError();
 

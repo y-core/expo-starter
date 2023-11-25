@@ -1,4 +1,3 @@
-// logger.ts
 import { DEBUG_LOG } from '#/env';
 
 export interface ILog {
@@ -10,6 +9,8 @@ export interface ILog {
 
 type TMessageType = 'debug' | 'error' | 'info' | 'warn';
 
+const debug = __DEV__ && DEBUG_LOG;
+
 const emitLogMessage = (msgType: TMessageType, msg: string, supportingDetails: any[]) => {
   if (supportingDetails.length > 0) {
     console[msgType](msg, supportingDetails);
@@ -20,7 +21,7 @@ const emitLogMessage = (msgType: TMessageType, msg: string, supportingDetails: a
 
 const logger: ILog = {
   debug: (msg: string, ...supportingDetails: any[]) => {
-    if (__DEV__ && DEBUG_LOG) {
+    if (debug) {
       emitLogMessage('debug', msg, supportingDetails);
     }
   },
