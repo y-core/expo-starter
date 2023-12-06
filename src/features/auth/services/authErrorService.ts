@@ -1,4 +1,4 @@
-import * as Yup from 'yup';
+import { z } from 'zod';
 
 import { ToastError } from '~/common/components';
 import { lang, logg } from '~/common/utils';
@@ -6,8 +6,8 @@ import { lang, logg } from '~/common/utils';
 const yieldError = (error) => {
   let errorKey: keyof typeof lang.auth = 'default';
   switch (true) {
-    case error instanceof Yup.ValidationError: {
-      errorKey = error.inner[0].message;
+    case error instanceof z.ZodError: {
+      errorKey = error.issues.code;
       break;
     }
     case error instanceof Error: {

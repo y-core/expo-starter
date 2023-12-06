@@ -1,9 +1,9 @@
 import React from 'react';
 import { ActivityIndicator, Pressable, PressableProps, Text as NativeText, TextProps, TextStyle, ViewStyle } from 'react-native';
 
+import { TColor } from '~/@types';
 import { useColor } from '~/color/hooks';
 import { tw } from '~/common/utils';
-import { TColor } from '~/constants/Colors';
 
 interface ButtonProps extends PressableProps {
   asLink?: boolean;
@@ -15,12 +15,12 @@ interface ButtonProps extends PressableProps {
 
 export default function Button({ asLink = false, children, loading, style, textStyle, ...props }: ButtonProps) {
   const { colors } = useColor();
-  const baseStyle = asLink ? linkStyles(colors) : defaultStyles(colors);
+  const styles = asLink ? linkStyles(colors) : defaultStyles(colors);
 
   return (
-    <Pressable disabled={loading} style={({ pressed }) => tw.style({ 'opacity-80': pressed }, baseStyle.pressable, style)} {...props}>
-      {typeof children === 'string' ? <NativeText style={[baseStyle.text, textStyle]}>{children}</NativeText> : children}
-      {loading && <ActivityIndicator size="small" style={baseStyle.activity} color={baseStyle.activityColor} />}
+    <Pressable disabled={loading} style={({ pressed }) => tw.style({ 'opacity-80': pressed }, styles.pressable, style)} {...props}>
+      {typeof children === 'string' ? <NativeText style={[styles.text, textStyle]}>{children}</NativeText> : children}
+      {loading && <ActivityIndicator size="small" style={styles.activity} color={styles.activityColor} testID="loading-indicator" />}
     </Pressable>
   );
 }

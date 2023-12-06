@@ -1,10 +1,10 @@
 import React from 'react';
 import { SafeAreaView } from 'react-native';
 
+import { TColor } from '~/@types';
 import { useColor } from '~/color/hooks';
 import { ViewProps } from '~/common/components/View';
 import { tw } from '~/common/utils';
-import { TColor } from '~/constants/Colors';
 
 export default function Screen({ style, ...props }: ViewProps) {
   const { colors } = useColor();

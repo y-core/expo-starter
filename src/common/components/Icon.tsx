@@ -17,17 +17,17 @@ export const Icon = (props: IconProps) => {
 
 export const PressableIcon = forwardRef((props: IconProps, ref: Ref<never>) => {
   return (
-    <Pressable ref={ref} style={({ pressed }) => tw.style(baseStyle.pressable, { 'opacity-50': pressed })}>
-      <Icon style={{ ...baseStyle.pressableIcon, ...props.style }} {...props} />
+    <Pressable ref={ref} style={({ pressed }) => tw.style(styles.pressable, { 'opacity-50': pressed })}>
+      <Icon style={{ ...styles.pressableIcon, ...props.style }} {...props} />
     </Pressable>
   );
 });
 
 export const TabBarIcon = (props: IconProps) => {
-  return <Icon style={{ ...baseStyle.icon, ...props.style }} {...props} />;
+  return <Icon style={{ ...styles.icon, ...props.style }} {...props} />;
 };
 
-const baseStyle = {
+const styles = {
   pressable: tw.style('bg-transparent'),
   pressableIcon: tw.style('bg-transparent'),
   icon: tw.style('-mb-1'),

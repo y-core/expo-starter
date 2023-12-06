@@ -2,10 +2,16 @@ module.exports = {
   env: {
     node: true,
   },
-  extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended', 'plugin:react/recommended', 'plugin:prettier/recommended'],
+  extends: [
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:react/recommended',
+    'plugin:prettier/recommended',
+    '@react-native-community',
+  ],
   parser: '@typescript-eslint/parser',
   root: true,
-  plugins: ['simple-import-sort'],
+  plugins: ['simple-import-sort', 'jest-dom', 'testing-library'],
   rules: {
     '@typescript-eslint/ban-ts-comment': 'off',
     '@typescript-eslint/no-var-requires': 'off',

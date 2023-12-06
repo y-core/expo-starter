@@ -1,6 +1,6 @@
-import { ColorSchemeName, useColorScheme as _useColorScheme } from 'react-native';
+import { useColorScheme as _useColorScheme } from 'react-native';
 
-export type TColorSchemeName = NonNullable<ColorSchemeName>;
+import { TColorSchemeName } from '~/@types';
 
 export default function useColorScheme(): TColorSchemeName {
   return _useColorScheme() ?? 'light';

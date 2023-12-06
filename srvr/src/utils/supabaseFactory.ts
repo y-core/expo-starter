@@ -1,6 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseFactory = (url: string, key: string) => {
+export default (url: string, key: string) => {
   return createClient(url, key, {
     auth: {
       autoRefreshToken: true,
@@ -9,5 +9,3 @@ const supabaseFactory = (url: string, key: string) => {
     },
   });
 };
-
-export default supabaseFactory;

@@ -2,8 +2,8 @@
 // https://find-nearest-tailwind-colour.netlify.app
 // https://www.color-hex.com/color
 
-export type TColor = typeof themeColors.light;
-export type TTheme = keyof typeof themeColors;
+// export type TColor = typeof themeColors.light;
+// export type TTheme = keyof typeof themeColors;
 
 const commonColors = {
   primary: 'primary',

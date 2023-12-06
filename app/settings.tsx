@@ -16,9 +16,9 @@ export default function () {
           headerStyle: { backgroundColor: tw.color(colors.background) },
         }}
       />
-      <Screen style={tw.style('justify-start')}>
-        <Row style={tw.style('justify-between px-4')}>
-          <View style={tw.style('flex-row items-center justify-between gap-4')}>
+      <Screen style={styles.mainContainer}>
+        <Row style={styles.row}>
+          <View style={styles.themeContainer}>
             {theme === 'light' ? (
               <Icon color={tw.color(colors.tertiary)} size={32} name="sunny" />
             ) : (
@@ -40,3 +40,9 @@ export default function () {
     </>
   );
 }
+
+const styles = {
+  mainContainer: tw.style('justify-start'),
+  row: tw.style('justify-between px-4'),
+  themeContainer: tw.style('flex-row items-center justify-between gap-4'),
+};

@@ -1,34 +1,41 @@
-import * as Yup from 'yup';
+import { z } from 'zod';
 
-export const signInValidation = Yup.object().shape({
-  username: Yup.string().required('emailIsRequired').email('mustBeValidEmail'),
-  password: Yup.string().required('passwordIsRequired'),
+const emailValidation = z
+  .string()
+  .email('mustBeValidEmail')
+  .refine((data) => data.trim() !== '', {
+    message: 'emailIsRequired',
+  });
+
+const passwordValidation = z
+  .string()
+  .min(8, { message: 'passwordFormat' })
+  .regex(/[0-9]/, { message: 'passwordFormat' })
+  .regex(/[a-z]/, { message: 'passwordFormat' })
+  .regex(/[A-Z]/, { message: 'passwordFormat' })
+  .regex(/[^\w]/, { message: 'passwordFormat' })
+  .refine((data) => data.trim() !== '', { message: 'passwordIsRequired' });
+
+export const signInValidation = z.object({
+  username: emailValidation,
+  password: passwordValidation,
 });
 
-export const signUpValidation = Yup.object().shape({
-  username: Yup.string().required('emailIsRequired').email('mustBeValidEmail'),
-  password: Yup.string()
-    .required('passwordIsRequired')
-    .min(8, 'passwordFormat')
-    .matches(/[0-9]/, 'passwordFormat')
-    .matches(/[a-z]/, 'passwordFormat')
-    .matches(/[A-Z]/, 'passwordFormat')
-    .matches(/[^\w]/, 'passwordFormat'),
+export const signUpValidation = z.object({
+  username: emailValidation,
+  password: passwordValidation,
 });
 
-export const forgotPasswordValidation = Yup.object().shape({
-  email: Yup.string().required('emailIsRequired').email('mustBeValidEmail'),
+export const forgotPasswordValidation = z.object({
+  email: emailValidation,
 });
 
-export const resetPasswordValidation = Yup.object().shape({
-  password: Yup.string()
-    .required('passwordIsRequired')
-    .min(8, 'passwordFormat')
-    .matches(/[0-9]/, 'passwordFormat')
-    .matches(/[a-z]/, 'passwordFormat')
-    .matches(/[A-Z]/, 'passwordFormat')
-    .matches(/[^\w]/, 'passwordFormat'),
-  password_confirmation: Yup.string()
-    .required('confirmPasswordIsRequired')
-    .oneOf([Yup.ref('password')], 'passwordsMustMatch'),
-});
+export const resetPasswordValidation = z
+  .object({
+    password: passwordValidation,
+    password_confirmation: passwordValidation,
+  })
+  .refine((data) => data.password === data.password_confirmation, {
+    message: 'passwordsMustMatch',
+    path: ['password_confirmation'],
+  });

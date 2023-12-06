@@ -1,9 +1,9 @@
 import React, { useRef } from 'react';
 import { TextInput as NativeTextInput, TextInputProps, TextStyle } from 'react-native';
 
+import { TColor } from '~/@types';
 import { useColor } from '~/color/hooks';
 import { tw } from '~/common/utils';
-import { TColor } from '~/constants/Colors';
 
 interface ITextInputProps extends TextInputProps {
   style?: TextStyle;
@@ -14,23 +14,23 @@ interface ITextInputProps extends TextInputProps {
 export default function TextInput({ style, ...props }: ITextInputProps) {
   const { colors } = useColor();
   const inputRef = useRef<NativeTextInput>(null);
-  const baseStyle = defaultStyles(colors);
+  const styles = colorStyles(colors);
 
   const handleBlur = () => {
     props.onBlur && props.onBlur();
-    inputRef.current && inputRef?.current.setNativeProps({ style: { ...baseStyle.input, ...style } });
+    inputRef.current && inputRef?.current.setNativeProps({ style: { ...styles.input, ...style } });
   };
 
   const handleFocus = () => {
     props.onFocus && props.onFocus();
-    inputRef.current && inputRef.current.setNativeProps({ style: { ...baseStyle.input, ...baseStyle.focus, ...style } });
+    inputRef.current && inputRef.current.setNativeProps({ style: { ...styles.input, ...styles.focus, ...style } });
   };
 
   return (
     <NativeTextInput
-      placeholderTextColor={baseStyle.placeholderTextColor}
+      placeholderTextColor={styles.placeholderTextColor}
       ref={inputRef}
-      style={[baseStyle.input, style]}
+      style={[styles.input, style]}
       {...props}
       onBlur={handleBlur}
       onFocus={handleFocus}
@@ -38,7 +38,7 @@ export default function TextInput({ style, ...props }: ITextInputProps) {
   );
 }
 
-const defaultStyles = (colors: TColor) => ({
+const colorStyles = (colors: TColor) => ({
   input: tw.style('p-3 rounded-lg border border-slate-500', {
     color: tw.color(colors.inputText),
     backgroundColor: tw.color(colors.input),

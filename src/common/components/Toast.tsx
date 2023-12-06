@@ -2,8 +2,8 @@ import React from 'react';
 import { ViewStyle } from 'react-native';
 import Toast, { BaseToast, BaseToastProps } from 'react-native-toast-message';
 
+import { TColor } from '~/@types';
 import { tw } from '~/common/utils';
-import { TColor } from '~/constants/Colors';
 
 export const toastConfig = (colors: TColor) => {
   const commonProps = {

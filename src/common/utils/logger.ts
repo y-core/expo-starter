@@ -1,4 +1,4 @@
-import { DEBUG_LOG } from '#/env';
+import { appConfig } from '~/constants/Config';
 
 export interface ILog {
   debug(primaryMessage: string, ...supportingData: any[]): void;
@@ -9,10 +9,10 @@ export interface ILog {
 
 type TMessageType = 'debug' | 'error' | 'info' | 'warn';
 
-const debug = __DEV__ && DEBUG_LOG;
+const debug = __DEV__ && appConfig.DEBUG_LOG;
 
 const emitLogMessage = (msgType: TMessageType, msg: string, supportingDetails: any[]) => {
-  if (supportingDetails.length > 0) {
+  if (supportingDetails?.length > 0) {
     console[msgType](msg, supportingDetails);
   } else {
     console[msgType](msg);

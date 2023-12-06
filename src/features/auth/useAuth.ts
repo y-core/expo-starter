@@ -1,15 +1,15 @@
 import { useRef } from 'react';
 import { create } from 'zustand';
 
-import { SIGNIN_DEV } from '#/env';
+import { IAuthState, ICredentials } from '~/@types';
 import { SecureStore } from '~/common/store';
 import { go } from '~/common/utils';
+import { appConfig } from '~/constants/Config';
 import { forgotPasswordValidation, signInValidation, signUpValidation } from '~/constants/validation/auth';
-import { IAuthState, ICredentials } from '~/features/auth/auth.d';
-import { authError, loadAuthService } from '~/features/auth/services';
+import { authError, authService } from '~/features/auth/services';
 
 const SIGNIN_EMPTY: ICredentials = { username: '', password: '' };
-const SIGNIN_DEFAULT: ICredentials = __DEV__ && SIGNIN_DEV ? SIGNIN_DEV.credentials : SIGNIN_EMPTY;
+const SIGNIN_DEFAULT: ICredentials = __DEV__ && appConfig.SIGNIN_DEV ? appConfig.SIGNIN_DEV : SIGNIN_EMPTY;
 
 const err = authError();
 
@@ -25,14 +25,13 @@ export const useAuth = create<IAuthState>((set) => ({
     set({ loading: true });
     const credentials = { username: authRef.username?.current, password: authRef.password?.current };
 
-    const [vErr] = await go(signInValidation.validate(credentials, { abortEarly: false }));
+    const [vErr] = await go(signInValidation.parseAsync(credentials));
     if (vErr) {
       set({ loading: false });
       await err.show(vErr);
       return null;
     }
 
-    const authService = await loadAuthService();
     const [error, user] = await authService.signIn(credentials);
 
     if (error || !user) {
@@ -41,10 +40,7 @@ export const useAuth = create<IAuthState>((set) => ({
       return null;
     }
 
-    set({
-      auth: { uid: user.uid, email: user?.email },
-      loading: false,
-    });
+    set({ auth: user, loading: false });
     await SecureStore.set('auth', user);
 
     return user;
@@ -53,14 +49,13 @@ export const useAuth = create<IAuthState>((set) => ({
     set({ loading: true });
     const credentials = { username: authRef.username?.current, password: authRef.password?.current };
 
-    const [vErr] = await go(signUpValidation.validate(credentials, { abortEarly: false }));
+    const [vErr] = await go(signUpValidation.parseAsync(credentials));
     if (vErr) {
       set({ loading: false });
       await err.show(vErr);
       return null;
     }
 
-    const authService = await loadAuthService();
     const [error, user] = await authService.signUp(credentials);
 
     if (error || !user) {
@@ -69,10 +64,7 @@ export const useAuth = create<IAuthState>((set) => ({
       return null;
     }
 
-    set({
-      auth: { uid: user.uid, email: user?.email },
-      loading: false,
-    });
+    set({ auth: user, loading: false });
     await SecureStore.set('auth', user);
 
     return user;
@@ -80,7 +72,6 @@ export const useAuth = create<IAuthState>((set) => ({
   signOut: async () => {
     set({ loading: true });
 
-    const authService = await loadAuthService();
     const [error] = await authService.signOut();
 
     if (error) {
@@ -96,7 +87,7 @@ export const useAuth = create<IAuthState>((set) => ({
   resetPassword: async (username) => {
     set({ loading: true });
 
-    const [vErr] = await go(forgotPasswordValidation.validate({ email: username }, { abortEarly: false }));
+    const [vErr] = await go(forgotPasswordValidation.parseAsync({ email: username }));
     if (vErr) {
       set({ loading: false });
       await err.show(vErr);
@@ -115,7 +106,7 @@ export const useAuth = create<IAuthState>((set) => ({
     const user = await SecureStore.get<IAuthState['auth']>('auth');
 
     if (user && user.email) {
-      await SecureStore.set('auth', user);
+      set({ auth: user });
     }
   },
 }));

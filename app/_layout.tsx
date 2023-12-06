@@ -57,7 +57,6 @@ function RootLayout() {
           headerShown: false,
           navigationBarColor: tw.color(colors.background),
           statusBarColor: tw.color(colors.background),
-          // animation: 'slide_from_bottom',
         }}
       >
         <Stack.Screen
@@ -66,7 +65,6 @@ function RootLayout() {
             headerShown: false,
             navigationBarColor: tw.color(colors.background),
             statusBarColor: tw.color(colors.background),
-            // contentStyle: tw.style('border border-green-500'),
           }}
         />
         <Stack.Screen

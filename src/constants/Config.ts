@@ -1,35 +1,11 @@
-import { IAuthConfig } from '~/features/auth/auth.d';
-import { IEntriesConfig } from '~/features/entries/entries.d';
+import ExpoConstants from 'expo-constants';
 
-export type IConfig = IAuthConfig &
-  IEntriesConfig & {
-    default: {
-      env: TStage;
-      pagesize: number;
-    };
-  };
+import { sharedConfig } from '§shared/constants';
+import { ExpoConfig, ExtraConfig, ISharedConfig } from '~/@types';
 
-export type TStage = 'development' | 'production' | 'test';
-export const validEnvironments: TStage[] = ['development', 'production', 'test'];
-export const defaultEnvironment: TStage = validEnvironments.includes(process.env.NODE_ENV!) ? process.env.NODE_ENV! : 'development';
+const expoConfig: ExpoConfig = ExpoConstants.expoConfig as ExpoConfig;
 
-export const configItems: IConfig = {
-  default: {
-    env: defaultEnvironment,
-    pagesize: defaultEnvironment === 'production' ? 20 : 5,
-  },
-  auth: {
-    services: {
-      development: 'fakeAuthService',
-      production: 'srvrAuthService',
-      test: 'fakeAuthService',
-    },
-  },
-  entries: {
-    services: {
-      development: 'fakeEntriesService',
-      production: 'srvrEntriesService',
-      test: 'fakeEntriesService',
-    },
-  },
+export const appConfig: ExtraConfig & ISharedConfig = {
+  ...expoConfig.extra,
+  ...sharedConfig,
 };

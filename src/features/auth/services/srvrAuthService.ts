@@ -1,51 +1,58 @@
+// https://supabase.com/docs/guides/auth/server-side/email-based-auth-with-pkce-flow-for-ssr
 import axios from 'axios';
 
-import { API_PATHS, API_SERVER } from '§/auth/api';
+import { ICredentials } from '~/@types';
 import { go, logg } from '~/common/utils';
-import { IAuthResponse, ICredentials } from '~/features/auth';
+import { appConfig } from '~/constants/Config';
 
-const api = axios.create({ baseURL: API_SERVER.url });
+// interface ApiResponse<T> {
+//   user: IUser;
+// }
+const baseurl = appConfig.SERVER_URL.concat(appConfig.api.paths.auth.route);
+console.debug('baseurl', baseurl);
 
-export const fetch = (): IAuthResponse => {
-  return {
-    signIn: async (credentials: ICredentials) => {
-      const [error, response] = await go(
-        api.post(API_PATHS.signin, {
-          email: credentials.username,
-          password: credentials.password,
-        }),
-      );
+const api = axios.create({ baseURL: baseurl });
 
-      const user = response?.status === 200 && (await response?.data.data.user) ? await response?.data.data.user : null;
+export default {
+  signIn: async (credentials: ICredentials) => {
+    const [error, response] = await go(
+      api.post(appConfig.api.paths.auth.signin, {
+        username: credentials.username,
+        password: credentials.password,
+      }),
+    );
 
-      logg.debug('srvr.signIn', response?.status, user?.email, error);
-      return [error, user];
-    },
-    signUp: async (credentials: ICredentials) => {
-      const [error, response] = await go(
-        api.post(API_PATHS.signup, {
-          email: credentials.username,
-          password: credentials.password,
-        }),
-      );
-      const user = response?.status === 200 && (await response?.data.data.user) ? await response?.data.data.user : null;
+    if (error) {
+      logg.error('Axios', error.message);
+    }
 
-      logg.debug('srvr.signUp', response?.status, user?.email, error);
-      return [error, user];
-    },
-    signOut: async () => {
-      const [error] = await go(api.get(API_PATHS.signout));
-      logg.debug('srvr.signOut', error);
-      return [error, null];
-    },
-    resetPassword: async (username) => {
-      logg.debug('TODO: srvr.resetPassword', username);
-      return [null, null];
-      // return [null, await fakeResponse({ username: username, password: '' })];
+    const user = response?.status === 200 ? await response?.data : null;
 
-      // const { data, error } = await srvrbase.auth.resetPasswordForEmail(username, {
-      //   redirectTo: 'https://example.com/update-password',
-      // });
-    },
-  };
+    return [error, user];
+  },
+  signUp: async (credentials: ICredentials) => {
+    const [error, response] = await go(
+      api.post(appConfig.api.paths.auth.signup, {
+        username: credentials.username,
+        password: credentials.password,
+      }),
+    );
+    const user = response?.status === 200 && (await response?.data.data.user) ? await response?.data.data.user : null;
+
+    return [error, user];
+  },
+  signOut: async () => {
+    const [error] = await go(api.get(appConfig.api.paths.auth.signout));
+    return [error, null];
+  },
+  resetPassword: async (username: string) => {
+    logg.debug('TODO: srvr.resetPassword', username);
+    return [null, null];
+    // return [null, await fakeResponse({ username: username, password: '' })];
+
+    // const { data, error } = await srvrbase.auth.resetPasswordForEmail(username, {
+    //   redirectTo: 'https://example.com/update-password',
+    // });
+  },
+  // };
 };

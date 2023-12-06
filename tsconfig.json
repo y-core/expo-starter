@@ -5,16 +5,24 @@
     "forceConsistentCasingInFileNames": true,
     "module": "esnext",
     "paths": {
-      "#/*": [ "./*" ],
       "~/*": [ "./src/*" ],
+      "~assets/*": [ "./assets/*" ],
       "§/*": [ "./srvr/src/*" ],
+      "§data/*": [ "./srvr/data/*" ],
+      "§shared/*": [ "./srvr/shared/*" ],
     },
+    "skipLibCheck": true,
+    "types": [ "@cloudflare/workers-types" ]
   },
   "include": [
-    "**/*.ts",
-    "**/*.tsx",
+    "./app/**/*.ts",
+    "./app/**/*.tsx",
     "./src/**/*.ts",
     "./src/**/*.tsx",
+    "./srvr/**/*.ts",
+    "./srvr/**/*.tsx",
+    // "./srvr/shared/**/*.ts",
+    // "./srvr/shared/**/*.tsx",
     ".expo/types/**/*.ts",
     "expo-env.d.ts"
   ],

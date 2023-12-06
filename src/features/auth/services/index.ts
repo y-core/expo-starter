@@ -1,2 +1,2 @@
 export { authError } from '~/features/auth/services/authErrorService';
-export { loadAuthService } from '~/features/auth/services/loadAuthService';
+export { default as authService } from '~/features/auth/services/srvrAuthService';

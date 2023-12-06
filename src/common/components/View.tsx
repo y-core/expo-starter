@@ -8,9 +8,9 @@ export interface ViewProps extends NativeViewProps {
 }
 
 export default function View({ style, ...props }: ViewProps) {
-  return <NativeView style={{ ...baseStyle.view, ...style }} {...props} />;
+  return <NativeView style={{ ...styles.view, ...style }} {...props} />;
 }
 
-const baseStyle = {
+const styles = {
   view: tw.style('bg-transparent'),
 };

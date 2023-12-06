@@ -1,26 +1,18 @@
-import { ColorSchemeName } from 'react-native';
 import { create } from 'zustand';
 
+import { IColorState, TTheme } from '~/@types';
 import { AsyncStore } from '~/common/store';
-import { TColor, themeColors, TTheme } from '~/constants/Colors';
-
-export interface ColorState {
-  colors: TColor;
-  theme: TTheme;
-  loadedTheme: boolean;
-  loadTheme: (systemTheme: ColorSchemeName) => Promise<void>;
-  toggleTheme: () => void;
-}
+import { themeColors } from '~/constants/Colors';
 
 const themes: TTheme[] = ['light', 'dark'];
 
-const useColor = create<ColorState>((set) => ({
+const useColor = create<IColorState>((set) => ({
   colors: themeColors[themes[0]],
   theme: themes[0],
   loadedTheme: false,
   loadTheme: async (systemTheme) => {
     if (!useColor.getState().loadedTheme) {
-      let theme = await AsyncStore.get<ColorState['theme']>('theme');
+      let theme = await AsyncStore.get<IColorState['theme']>('theme');
       theme = theme?.theme ?? systemTheme ?? themes[0];
 
       if (theme) {

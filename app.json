@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "expo-router-template",
-    "slug": "expo-router-template",
+    "name": "racepro",
+    "slug": "racepro",
     "scheme": "expo-router",
     "version": "1.0.0",
     "orientation": "portrait",
